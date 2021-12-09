@@ -129,4 +129,9 @@ abstract class TransBase
         }
         return true;
     }
+
+    public function withGid(string $transGid): TransBase {
+        $this->transGid = $transGid;
+        return $this;
+    }
 }

@@ -15,7 +15,7 @@ class TccTrans extends TransBase implements ITransExcludeSaga
      * @throws Exception
      */
     public function withOperate(string $gid, callable $callback): bool {
-        $success = $this->withNewGid($gid)->prepare();
+        $success = $this->withGid($gid)->prepare();
         $result  = $callback($this);
         if ($success && $result) {
             return $this->submit();
@@ -82,4 +82,15 @@ class TccTrans extends TransBase implements ITransExcludeSaga
         return $this->requestBranch($postData, $branchId, $tryUrl, DtmConstant::TccTrans, DtmConstant::ActionTry);
     }
 
+    /**
+     * @param array $queryData
+     * @return TccTrans
+     */
+    public function transFromQuery(array $queryData): TccTrans {
+        $trans = new TccTrans();
+        $trans->setDtmHost($queryData["dtm"]);
+        $trans->branchId = $queryData["brand_id"];
+        $trans->transGid = $queryData["gid"];
+        return $trans;
+    }
 }

@@ -39,9 +39,4 @@ class SagaTrans extends TransBase implements ITransWithSaga
     public function abort() {
         // TODO: Implement abort() method.
     }
-
-    public function withGid(string $transGid): SagaTrans {
-        $this->transGid = $transGid;
-        return $this;
-    }
 }

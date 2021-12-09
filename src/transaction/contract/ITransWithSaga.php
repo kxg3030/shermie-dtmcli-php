@@ -9,9 +9,6 @@ namespace sett\transaction\contract;
  */
 interface ITransWithSaga
 {
-
-    public function withGid(string $transGid);
-
     public function submit();
 
     public function abort();

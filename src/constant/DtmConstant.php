@@ -31,14 +31,15 @@ class DtmConstant
     const MsgTrans = "msg";
     // xa事务
     const XaTrans = "xa";
-
+    // 返回状态
     const Success = "SUCCESS";
     const Failure = "FAILURE";
-
+    // 事务状态
     const ActionTry        = "try";
     const ActionConfirm    = "confirm";
     const Action           = "action";
     const ActionCompensate = "compensate";
     const ActionComment    = "comment";
     const ActionRollback   = "rollback";
+    const ActionCancel   = "cancel";
 }
