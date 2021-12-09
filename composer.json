@@ -1,0 +1,19 @@
+{
+  "name": "kxg3030/dtmcli-php",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Your Name",
+      "email": "657920579@qq.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "sett\\": "src/"
+    }
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "guzzlehttp/guzzle": "~6.0"
+  }
+}
