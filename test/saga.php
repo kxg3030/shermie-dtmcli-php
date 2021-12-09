@@ -5,15 +5,15 @@ use sett\transaction\SagaTrans;
 use sett\transaction\TccTrans;
 
 require __DIR__ . "/../vendor/autoload.php";
-
-// tcc
+$baseUrl = "http://127.0.0.1:8082/api/busi_start";
+// saga
 try {
     $trans = new SagaTrans("127.0.0.1:36789");
     $gid   = $trans->createNewGid();
     $trans
         ->withGid($gid)
-        ->withOperate("http://127.0.0.1:8081/api/busi/TransOut", "http://127.0.0.1:8081/api/busi/TransOutRevert", ["amount" => 30])
-        ->withOperate("http://127.0.0.1:8081/api/busi/TransIn", "http://127.0.0.1:8081/api/busi/TransInRevert", ["amount" => 30]);
+        ->withOperate("$baseUrl/TransOut", "$baseUrl/TransOutCompensate", ["amount" => 30])
+        ->withOperate("$baseUrl/TransIn", "$baseUrl/TransInCompensate", ["amount" => 30]);
     $success = $trans->submit();
     die("result $success");
 } catch (Exception $exception) {
