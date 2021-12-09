@@ -33,7 +33,12 @@ class SagaTrans extends TransBase implements ITransWithSaga
         if (empty($this->transGid)) {
             throw new Exception("gid can not be empty");
         }
-        return $this->submitRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::SagaTrans]);
+        return $this->submitRequest([
+            "gid"            => $this->transGid,
+            "trans_type"     => DtmConstant::SagaTrans,
+            "steps"          => $this->transSteps,
+            "payloads"       => $this->payloads
+        ]);
     }
 
     public function abort() {

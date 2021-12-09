@@ -73,7 +73,7 @@ abstract class TransBase
      */
     protected function submitRequest(array $postData): bool {
         $body     = $this->client()->post($this->combineUrl(DtmConstant::TransSubmitPath), [
-            "json" => $postData,
+            "json" => $postData
         ])->getBody()->getContents();
         $response = json_decode($body, false);
         if ($response->dtm_result == DtmConstant::Failure) {
