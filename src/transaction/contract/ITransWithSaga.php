@@ -10,7 +10,7 @@ namespace sett\transaction\contract;
 interface ITransWithSaga
 {
 
-    public function withNewGid(string $transGid);
+    public function withGid(string $transGid);
 
     public function submit();
 

@@ -15,6 +15,9 @@ class XaTrans extends TransBase implements ITransExcludeSaga
      * @throws Exception
      */
     public function submit(): bool {
+        if (empty($this->transGid)) {
+            throw new Exception("gid can not be empty");
+        }
         return $this->submitRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::XaTrans]);
     }
 
@@ -22,6 +25,9 @@ class XaTrans extends TransBase implements ITransExcludeSaga
      * @throws Exception
      */
     function prepare(): bool {
+        if (empty($this->transGid)) {
+            throw new Exception("gid can not be empty");
+        }
         return $this->prepareRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::XaTrans]);
     }
 
@@ -29,6 +35,9 @@ class XaTrans extends TransBase implements ITransExcludeSaga
      * @throws Exception
      */
     public function abort(): bool {
+        if (empty($this->transGid)) {
+            throw new Exception("gid can not be empty");
+        }
         return $this->abortRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::XaTrans]);
     }
 

@@ -10,8 +10,6 @@ namespace sett\transaction\contract;
 interface ITransExcludeSaga
 {
 
-    public function withNewGid(string $transGid);
-
     public function prepare();
 
     public function submit();

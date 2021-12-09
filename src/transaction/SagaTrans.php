@@ -22,6 +22,7 @@ class SagaTrans extends TransBase implements ITransWithSaga
             "action"     => $actionUrl,
             "compensate" => $compensateUrl
         ];
+        $this->payloads[]   = json_encode($postData, JSON_UNESCAPED_UNICODE);
         return $this;
     }
 
@@ -29,6 +30,9 @@ class SagaTrans extends TransBase implements ITransWithSaga
      * @throws Exception
      */
     public function submit(): bool {
+        if (empty($this->transGid)) {
+            throw new Exception("gid can not be empty");
+        }
         return $this->submitRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::SagaTrans]);
     }
 
@@ -36,4 +40,8 @@ class SagaTrans extends TransBase implements ITransWithSaga
         // TODO: Implement abort() method.
     }
 
+    public function withGid(string $transGid): SagaTrans {
+        $this->transGid = $transGid;
+        return $this;
+    }
 }

@@ -23,6 +23,10 @@ abstract class TransBase
     // 消息超时查询地址
     public $queryUrl = "";
 
+    public function __construct(string $dtmHost = "") {
+        $this->dtmHost = $dtmHost;
+    }
+
     /**
      * @param string $dtmHost
      * @return TransBase
@@ -32,11 +36,6 @@ abstract class TransBase
         return $this;
     }
 
-
-    public function withNewGid(string $transGid): TransBase {
-        $this->transGid = $transGid;
-        return $this;
-    }
 
     /**
      * @throws Exception
@@ -86,9 +85,9 @@ abstract class TransBase
     /**
      * @throws Exception
      */
-    public function createNewGid() {
+    public function createNewGid(): string {
         $body     = $this->client()->get($this->combineUrl(DtmConstant::GetNewGidPath))->getBody()->getContents();
-        $response = json_decode($body, JSON_UNESCAPED_UNICODE);
+        $response = json_decode($body, false);
         if ($response->dtm_result == DtmConstant::Failure) {
             throw new Exception($response->message);
         }
@@ -122,9 +121,9 @@ abstract class TransBase
         ];
         $body      = $this->client()->post($tryUrl, [
             "query" => http_build_query($queryData),
-            "json"  => $postData
+            "json"  => $postData,
         ])->getBody()->getContents();
-        $response  = json_decode($body, JSON_UNESCAPED_UNICODE);
+        $response  = json_decode($body, false);
         if ($response->dtm_result == DtmConstant::Failure) {
             throw new Exception($response->message);
         }

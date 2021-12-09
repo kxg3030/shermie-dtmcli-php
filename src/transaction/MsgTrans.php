@@ -18,11 +18,11 @@ class MsgTrans extends TransBase implements ITransExcludeSaga
         $this->transSteps[] = [
             "action" => $actionUrl
         ];
-        $this->payloads[]   = $postData;
+        $this->payloads[]   = json_encode($postData, JSON_UNESCAPED_UNICODE);
         return $this;
     }
 
-    public function withQueryPrepare(string $queryUrl): MsgTrans {
+    public function withQueryUrl(string $queryUrl): MsgTrans {
         $this->queryUrl = $queryUrl;
         return $this;
     }
