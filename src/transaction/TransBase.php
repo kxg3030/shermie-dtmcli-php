@@ -22,9 +22,18 @@ abstract class TransBase
     public $payloads = [];
     // 消息超时查询地址
     public $queryUrl = "";
+    // 是否等待事务结果
+    protected $waitResult = false;
 
     public function __construct(string $dtmHost = "") {
         $this->dtmHost = $dtmHost;
+    }
+
+    /**
+     * @param bool $waitResult
+     */
+    public function setWaitResult(bool $waitResult) {
+        $this->waitResult = $waitResult;
     }
 
     /**

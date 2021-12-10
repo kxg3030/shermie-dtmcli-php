@@ -11,6 +11,7 @@ class SagaTrans extends TransBase implements ITransWithSaga
     // 事务执行顺序
     public $transSteps = [];
 
+
     /**
      * @param string $actionUrl
      * @param string $compensateUrl
@@ -34,14 +35,16 @@ class SagaTrans extends TransBase implements ITransWithSaga
             throw new Exception("gid can not be empty");
         }
         return $this->submitRequest([
-            "gid"            => $this->transGid,
-            "trans_type"     => DtmConstant::SagaTrans,
-            "steps"          => $this->transSteps,
-            "payloads"       => $this->payloads
+            "gid"         => $this->transGid,
+            "trans_type"  => DtmConstant::SagaTrans,
+            "steps"       => $this->transSteps,
+            "payloads"    => $this->payloads,
+            "wait_result" => $this->waitResult
         ]);
     }
 
     public function abort() {
         // TODO: Implement abort() method.
     }
+
 }

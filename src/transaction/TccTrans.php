@@ -8,8 +8,9 @@ use sett\transaction\contract\ITransExcludeSaga;
 
 class TccTrans extends TransBase implements ITransExcludeSaga
 {
-    public $branchId    = "";
-    public $subBranchId = 0;
+    public  $branchId    = "";
+    public  $subBranchId = 0;
+
 
     /**
      * @throws Exception
@@ -27,7 +28,7 @@ class TccTrans extends TransBase implements ITransExcludeSaga
      * @throws Exception
      */
     public function prepare(): bool {
-        return $this->prepareRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::TccTrans]);
+        return $this->prepareRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::TccTrans, "wait_result"    => $this->waitResult]);
     }
 
 
@@ -38,7 +39,7 @@ class TccTrans extends TransBase implements ITransExcludeSaga
         if (empty($this->transGid)) {
             throw new Exception("gid can not be empty");
         }
-        return $this->submitRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::TccTrans]);
+        return $this->submitRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::TccTrans, "wait_result" => $this->waitResult]);
     }
 
     /**
@@ -93,4 +94,6 @@ class TccTrans extends TransBase implements ITransExcludeSaga
         $trans->transGid = $queryData["gid"];
         return $trans;
     }
+
+
 }

@@ -36,7 +36,8 @@ class MsgTrans extends TransBase implements ITransExcludeSaga
             "trans_type"     => DtmConstant::MsgTrans,
             "steps"          => $this->transSteps,
             "payloads"       => $this->payloads,
-            "query_prepared" => $this->queryUrl
+            "query_prepared" => $this->queryUrl,
+            "wait_result"    => $this->waitResult
         ]);
     }
 
@@ -49,7 +50,8 @@ class MsgTrans extends TransBase implements ITransExcludeSaga
             "trans_type"     => DtmConstant::MsgTrans,
             "steps"          => $this->transSteps,
             "payloads"       => $this->payloads,
-            "query_prepared" => $this->queryUrl
+            "query_prepared" => $this->queryUrl,
+            "wait_result"    => $this->waitResult
         ]);
     }
 
