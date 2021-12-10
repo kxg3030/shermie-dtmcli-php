@@ -1,9 +1,9 @@
 <?php
 
-namespace sett\dtmcli\transaction;
+namespace Sett\Dtmcli\transaction;
 
-use sett\dtmcli\constant\DtmConstant;
-use sett\dtmcli\transaction\contract\IDatabase;
+use Sett\Dtmcli\constant\DtmConstant;
+use Sett\Dtmcli\transaction\contract\IDatabase;
 
 class BarrierTrans
 {

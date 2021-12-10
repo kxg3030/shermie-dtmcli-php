@@ -1,11 +1,11 @@
 <?php
 
-namespace sett\dtmcli\service;
+namespace Sett\Dtmcli\service;
 
-use sett\dtmcli\constant\DtmConstant;
-use sett\dtmcli\traits\HttpTrait;
-use sett\dtmcli\traits\SingletonTrait;
-use sett\dtmcli\traits\UtilsTrait;
+use Sett\Dtmcli\constant\DtmConstant;
+use Sett\Dtmcli\traits\HttpTrait;
+use Sett\Dtmcli\traits\SingletonTrait;
+use Sett\Dtmcli\traits\UtilsTrait;
 
 class DtmService extends BaseService
 {

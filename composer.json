@@ -1,5 +1,5 @@
 {
-  "name": "kxg3030/dtmcli-php",
+  "name": "sett/dtmcli-php",
   "type": "library",
   "authors": [
     {
@@ -9,7 +9,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "sett\\dtmcli\\": "src/"
+      "Sett\\Dtmcli\\": "src/"
     }
   },
   "minimum-stability": "dev",

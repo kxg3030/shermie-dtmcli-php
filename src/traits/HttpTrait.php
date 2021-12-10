@@ -1,6 +1,6 @@
 <?php
 
-namespace sett\dtmcli\traits;
+namespace Sett\Dtmcli\traits;
 
 use GuzzleHttp\Client;
 

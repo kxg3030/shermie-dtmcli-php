@@ -1,6 +1,6 @@
 <?php
 
-namespace sett\dtmcli\service;
+namespace Sett\Dtmcli\service;
 
 class BaseService
 {

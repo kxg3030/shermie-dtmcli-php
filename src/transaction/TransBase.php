@@ -1,11 +1,11 @@
 <?php
 
-namespace sett\dtmcli\transaction;
+namespace Sett\Dtmcli\transaction;
 
 use Exception;
-use sett\dtmcli\constant\DtmConstant;
-use sett\dtmcli\traits\HttpTrait;
-use sett\dtmcli\traits\UtilsTrait;
+use Sett\Dtmcli\constant\DtmConstant;
+use Sett\Dtmcli\traits\HttpTrait;
+use Sett\Dtmcli\traits\UtilsTrait;
 
 abstract class TransBase
 {

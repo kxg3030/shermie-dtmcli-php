@@ -1,6 +1,6 @@
 <?php
 
-namespace sett\dtmcli\constant;
+namespace Sett\Dtmcli\constant;
 
 class DtmConstant
 {

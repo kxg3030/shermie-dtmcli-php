@@ -1,8 +1,8 @@
 <?php
 
-use sett\service\DtmService;
-use sett\transaction\SagaTrans;
-use sett\transaction\TccTrans;
+use Sett\Dtmcli\service\DtmService;
+use Sett\Dtmcli\transaction\SagaTrans;
+use Sett\Dtmcli\transaction\TccTrans;
 
 require __DIR__ . "/../vendor/autoload.php";
 $baseUrl = "http://127.0.0.1:18310";

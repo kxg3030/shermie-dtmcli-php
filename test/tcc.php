@@ -1,7 +1,7 @@
 <?php
 
 
-use settdtmclidtmcli\transaction\TccTrans;
+use Sett\Dtmcli\transaction\TccTrans;
 
 require __DIR__ . "/../vendor/autoload.php";
 

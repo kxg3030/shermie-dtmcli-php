@@ -1,10 +1,10 @@
 <?php
 
-namespace sett\dtmcli\transaction;
+namespace Sett\Dtmcli\transaction;
 
 use Exception;
-use sett\dtmcli\constant\DtmConstant;
-use sett\dtmcli\transaction\contract\ITransExcludeSaga;
+use Sett\Dtmcli\constant\DtmConstant;
+use Sett\Dtmcli\transaction\contract\ITransExcludeSaga;
 
 class XaTrans extends TransBase implements ITransExcludeSaga
 {

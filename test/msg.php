@@ -1,14 +1,15 @@
 <?php
 
-use sett\service\DtmService;
-use sett\transaction\SagaTrans;
-use sett\transaction\TccTrans;
+use Sett\Dtmcli\service\DtmService;
+use Sett\Dtmcli\transaction\SagaTrans;
+use Sett\Dtmcli\transaction\TccTrans;
+use Sett\Dtmcli\transaction\MsgTrans;
 
 require __DIR__ . "/../vendor/autoload.php";
 $baseUrl = "http://127.0.0.1:8081/api/busi_start";
 // tcc
 try {
-    $trans = new \sett\transaction\MsgTrans("127.0.0.1:36789");
+    $trans = new MsgTrans("127.0.0.1:36789");
     $gid   = $trans->createNewGid();
     $trans
         ->withOperate("$baseUrl/TransOut", ["amount" => 30])
