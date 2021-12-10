@@ -132,9 +132,8 @@ abstract class TransBase
             "query" => http_build_query($queryData),
             "json"  => $postData,
         ])->getBody()->getContents();
-        $response  = json_decode($body, false);
-        if ($response->dtm_result == DtmConstant::Failure) {
-            throw new Exception($response->message);
+        if (strpos($body,DtmConstant::Failure) !== false) {
+            throw new Exception("try branch return fail");
         }
         return true;
     }

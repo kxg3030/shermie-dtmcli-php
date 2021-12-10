@@ -5,7 +5,7 @@ use sett\transaction\TccTrans;
 
 require __DIR__ . "/../vendor/autoload.php";
 
-$baseUrl = "http://127.0.0.1:8081/api/busi_start";
+$baseUrl = "http://127.0.0.1:18310";
 // tcc
 try {
     $trans   = new TccTrans("127.0.0.1:36789");
@@ -13,21 +13,23 @@ try {
     $success = $trans->withOperate($gid, function (TccTrans $tccTrans) use ($baseUrl) {
         $result = $tccTrans->callBranch(
             ["amount" => 30],
-            "$baseUrl/TransOut",
-            "$baseUrl/TransOutConfirm",
-            "$baseUrl/TransOutRevert"
+            "$baseUrl/dtm/tcc/transOut",
+            "$baseUrl/dtm/tcc/transOutConfirm",
+            "$baseUrl/dtm/tcc/transOutCancel"
         );
         if (!$result) {
-            die("error");
+            var_dump($result);
+            return;
         }
+        var_dump($result);
         return $tccTrans->callBranch(
             ["amount" => 30],
-            "$baseUrl/TransIn",
-            "$baseUrl/TransInConfirm",
-            "$baseUrl/TransInRevert"
+            "$baseUrl/dtm/tcc/transIn",
+            "$baseUrl/dtm/tcc/transInConfirm",
+            "$baseUrl/dtm/tcc/transInCancel"
         );
     });
-    die("result $success");
+    var_dump($success);
 } catch (Exception $exception) {
     die($exception->getMessage());
 }
