@@ -1,6 +1,6 @@
 <?php
 
-namespace sett\traits;
+namespace sett\dtmcli\traits;
 
 trait SingletonTrait
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace sett\transaction\contract;
+namespace sett\dtmcli\transaction\contract;
 
 /**
  * Interface ITransCommon

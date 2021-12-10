@@ -9,11 +9,12 @@
   ],
   "autoload": {
     "psr-4": {
-      "sett\\": "src/"
+      "sett\\dtmcli\\": "src/"
     }
   },
   "minimum-stability": "dev",
   "require": {
-    "guzzlehttp/guzzle": "~6.0"
+    "guzzlehttp/guzzle": "~6.0",
+    "ext-json": "*"
   }
 }

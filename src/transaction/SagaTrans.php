@@ -1,10 +1,10 @@
 <?php
 
-namespace sett\transaction;
+namespace sett\dtmcli\transaction;
 
 use Exception;
-use sett\constant\DtmConstant;
-use sett\transaction\contract\ITransWithSaga;
+use sett\dtmcli\constant\DtmConstant;
+use sett\dtmcli\transaction\contract\ITransWithSaga;
 
 class SagaTrans extends TransBase implements ITransWithSaga
 {

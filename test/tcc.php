@@ -1,7 +1,7 @@
 <?php
 
-use sett\service\DtmService;
-use sett\transaction\TccTrans;
+
+use settdtmclidtmcli\transaction\TccTrans;
 
 require __DIR__ . "/../vendor/autoload.php";
 
@@ -19,9 +19,8 @@ try {
         );
         if (!$result) {
             var_dump($result);
-            return;
+            return false;
         }
-        var_dump($result);
         return $tccTrans->callBranch(
             ["amount" => 30],
             "$baseUrl/dtm/tcc/transIn",
