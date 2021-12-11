@@ -12,7 +12,7 @@ require __DIR__ . "/../vendor/autoload.php";
 class UserDatabase implements IDatabase
 {
 
-    public function execute(string $query) {
+    public function execute(string $query):bool {
         // TODO: Implement execute() method.
     }
 
