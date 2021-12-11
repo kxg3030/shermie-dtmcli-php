@@ -4,6 +4,7 @@ use Sett\Dtmcli\transaction\TccTrans;
 
 require __DIR__ . "/../vendor/autoload.php";
 
+// 业务代码域名端口
 $baseUrl = "http://127.0.0.1:18310";
 // tcc
 try {
@@ -17,7 +18,7 @@ try {
             "$baseUrl/dtm/tcc/transOutCancel"
         );
         if (!$result) {
-            var_dump($result);
+            echo "call branch fail\n";
             return false;
         }
         return $tccTrans->callBranch(
@@ -27,7 +28,7 @@ try {
             "$baseUrl/dtm/tcc/transInCancel"
         );
     });
-    var_dump($success);
+    echo "transaction result {$success}\n";
 } catch (Exception $exception) {
     die($exception->getMessage());
 }
