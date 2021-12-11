@@ -13,6 +13,10 @@
 - Saga事务
 - 子事务屏障
 
+### 安装
+
+`composer require sett/dtmcli-php`
+
 ### 示例
 
  - tcc
