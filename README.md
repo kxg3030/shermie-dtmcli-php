@@ -1,4 +1,6 @@
-<p align="center" style="font-weight: bolder">dtmcli-php</p>
+<h2 align="center">
+<a href="">dtmcli-php</a>
+</h2>
 <p align="center">
 
 ![license](https://img.shields.io/github/license/kxg3030/dtmcli-php)
