@@ -17,7 +17,7 @@ class DtmService extends BaseService
     public function createNewGid() {
         $client = $this->client();
         $body   = $client->get($this->combineUrl(DtmConstant::GetNewGidPath))->getBody()->getContents();
-        return json_decode($body, JSON_UNESCAPED_UNICODE);
+        return json_decode($body, false);
     }
 
     /**
