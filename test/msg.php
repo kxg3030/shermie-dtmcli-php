@@ -1,6 +1,5 @@
 <?php
 
-use Sett\Dtmcli\service\DtmService;
 use Sett\Dtmcli\transaction\SagaTrans;
 use Sett\Dtmcli\transaction\TccTrans;
 use Sett\Dtmcli\transaction\MsgTrans;

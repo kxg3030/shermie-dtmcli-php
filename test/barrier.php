@@ -1,6 +1,5 @@
 <?php
 
-use Sett\Dtmcli\service\DtmService;
 use Sett\Dtmcli\transaction\BarrierTrans;
 use Sett\Dtmcli\transaction\contract\IDatabase;
 use Sett\Dtmcli\transaction\SagaTrans;
