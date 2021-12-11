@@ -13,6 +13,13 @@ class BarrierTrans
     public $operate;
     public $barrierId = 0;
 
+    public function __construct(array $query) {
+        $this->transType = $query["trans_type"];
+        $this->transGid  = $query["gid"];
+        $this->branchId  = $query["branch_id"];
+        $this->operate   = $query["op"];
+    }
+
     /**
      * @return mixed
      */
