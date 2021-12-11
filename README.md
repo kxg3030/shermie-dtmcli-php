@@ -7,12 +7,63 @@
 
 ### 支持事务类型
 
-- Tcc事务
+- Tcc事务和子事务嵌套
 - Xa事务
 - 消息事务
 - Saga事务
+- 子事务屏障
 
 ### 示例
+
+ - tcc
+    ```
+    // 127.0.0.1:36789为dtm默认端口
+    $trans   = new TccTrans("127.0.0.1:36789");
+    // 获取新事务ID
+    $gid     = $trans->createNewGid();
+    // 事务操作 
+    $success = $trans->withOperate($gid, function (TccTrans $tccTrans) use ($baseUrl) {
+        $result = $tccTrans->callBranch(
+            ["amount" => 30],
+            "$baseUrl/dtm/tcc/transOut",
+            "$baseUrl/dtm/tcc/transOutConfirm",
+            "$baseUrl/dtm/tcc/transOutCancel"
+        );
+        if (!$result) {
+            echo "call branch fail\n";
+            return false;
+        }
+        return $tccTrans->callBranch(
+            ["amount" => 30],
+            "$baseUrl/dtm/tcc/transIn",
+            "$baseUrl/dtm/tcc/transInConfirm",
+            "$baseUrl/dtm/tcc/transInCancel"
+        );
+    });
+    ```
+   
+ - saga
+    ```
+    $trans = new SagaTrans("127.0.0.1:36789");
+    $gid   = $trans->createNewGid();
+    $trans
+        ->withGid($gid)
+        ->withOperate("$baseUrl/dtm/saga/transOut", "$baseUrl/dtm/saga/transOutRevert", ["amount" => 30])
+        ->withOperate("$baseUrl/dtm/saga/transIn", "$baseUrl/dtm/saga/transInRevert", ["amount" => 30]);
+    $success = $trans->submit();
+    ```
+ 
+ - 事务消息
+    ```
+    $trans = new MsgTrans("127.0.0.1:36789");
+    $gid   = $trans->createNewGid();
+    $trans
+        ->withOperate("$baseUrl/dtm/msg/transOut", ["amount" => 30])
+        ->withOperate("$baseUrl/dtm/msg/transIn", ["amount" => 30])
+        ->withQueryUrl("$baseUrl/dtm/msg/query")
+        ->prepare();
+    $success = $trans->submit();
+    ```
 
 
 
