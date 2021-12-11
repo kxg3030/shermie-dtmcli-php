@@ -3,7 +3,7 @@
 
 ### 项目介绍
 
-为[DTM跨语言分布式事务管理](https://dtm.pub)编写的php客户端
+为[DTM跨语言分布式事务管理](https://dtm.pub)编写的php客户端,只支持http调用
 
 ### 支持事务类型
 
