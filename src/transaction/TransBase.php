@@ -57,7 +57,7 @@ abstract class TransBase
             "json" => $postData,
         ])->getBody()->getContents();
         $response = json_decode($body, false);
-        if ($response->dtm_result == DtmConstant::Failure) {
+        if (strpos($body,DtmConstant::Failure) !== false) {
             throw new Exception($response->message);
         }
         return true;
@@ -71,7 +71,7 @@ abstract class TransBase
             "json" => $postData,
         ])->getBody()->getContents();
         $response = json_decode($body, false);
-        if ($response->dtm_result == DtmConstant::Failure) {
+        if (strpos($body,DtmConstant::Failure) !== false) {
             throw new Exception($response->message);
         }
         return true;
@@ -85,7 +85,7 @@ abstract class TransBase
             "json" => $postData
         ])->getBody()->getContents();
         $response = json_decode($body, false);
-        if ($response->dtm_result == DtmConstant::Failure) {
+        if (strpos($body,DtmConstant::Failure) !== false) {
             throw new Exception($response->message);
         }
         return true;
@@ -97,7 +97,7 @@ abstract class TransBase
     public function createNewGid(): string {
         $body     = $this->client()->get($this->combineUrl(DtmConstant::GetNewGidPath))->getBody()->getContents();
         $response = json_decode($body, false);
-        if ($response->dtm_result == DtmConstant::Failure) {
+        if (strpos($body,DtmConstant::Failure) !== false) {
             throw new Exception($response->message);
         }
         return $response->gid;
@@ -111,7 +111,7 @@ abstract class TransBase
             "json" => $postData
         ])->getBody()->getContents();
         $response = json_decode($body, false);
-        if ($response->dtm_result == DtmConstant::Failure) {
+        if (strpos($body,DtmConstant::Failure) !== false) {
             throw new Exception($response->message);
         }
         return true;
