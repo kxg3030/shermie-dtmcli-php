@@ -8,7 +8,7 @@ require __DIR__ . "/../vendor/autoload.php";
 
 $baseUrl = "http://127.0.0.1:18310";
 try {
-    $trans = new MsgTrans("127.0.0.1:36789");
+    $trans = new MsgTrans("172.19.0.89:36789");
     $gid   = $trans->createNewGid();
     $trans
         ->withOperate("$baseUrl/dtm/msg/transOut", ["amount" => 30])

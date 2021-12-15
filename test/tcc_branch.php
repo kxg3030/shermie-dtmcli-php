@@ -11,6 +11,7 @@ try {
     $trans   = new TccTrans("172.19.0.89:36789");
     $gid     = $trans->createNewGid();
     $success = $trans->withOperate($gid, function (TccTrans $tccTrans) use ($baseUrl) {
+        // 分支一，转出
         $result = $tccTrans->callBranch(
             ["amount" => 30],
             "$baseUrl/dtm/tcc/transOut",
@@ -21,11 +22,12 @@ try {
             echo "call branch fail\n";
             return false;
         }
+        // 分支二，中间处理过程
         return $tccTrans->callBranch(
             ["amount" => 30],
-            "$baseUrl/dtm/tcc/transIn",
-            "$baseUrl/dtm/tcc/transInConfirm",
-            "$baseUrl/dtm/tcc/transInCancel"
+            "$baseUrl/dtm/tcc/transInParent",
+            "$baseUrl/dtm/tcc/transInParentConfirm",
+            "$baseUrl/dtm/tcc/transInParentCancel"
         );
     });
     echo "transaction result {$success}\n";

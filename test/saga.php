@@ -7,7 +7,7 @@ require __DIR__ . "/../vendor/autoload.php";
 $baseUrl = "http://127.0.0.1:18310";
 // saga
 try {
-    $trans = new SagaTrans("127.0.0.1:36789");
+    $trans = new SagaTrans("172.19.0.89:36789");
     $gid   = $trans->createNewGid();
     $trans
         ->withGid($gid)
