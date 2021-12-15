@@ -8,8 +8,8 @@ use Sett\Dtmcli\transaction\contract\ITransExcludeSaga;
 
 class TccTrans extends TransBase implements ITransExcludeSaga
 {
-    public  $branchId    = "";
-    public  $subBranchId = 0;
+    public $branchId    = "";
+    public $subBranchId = 0;
 
 
     /**
@@ -28,7 +28,7 @@ class TccTrans extends TransBase implements ITransExcludeSaga
      * @throws Exception
      */
     public function prepare(): bool {
-        return $this->prepareRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::TccTrans, "wait_result"    => $this->waitResult]);
+        return $this->prepareRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::TccTrans, "wait_result" => $this->waitResult]);
     }
 
 
@@ -88,9 +88,10 @@ class TccTrans extends TransBase implements ITransExcludeSaga
      * @return TccTrans
      */
     public function transFromQuery(array $queryData): TccTrans {
-        $trans = new TccTrans();
-        $trans->setDtmHost($queryData["dtm"]);
-        $trans->branchId = $queryData["brand_id"];
+        $trans           = new TccTrans();
+        $urlInfo         = parse_url($queryData["dtm"]);
+        $trans->dtmHost  = sprintf("%s:%s", $urlInfo["host"], $urlInfo["port"]);
+        $trans->branchId = $queryData["branch_id"];
         $trans->transGid = $queryData["gid"];
         return $trans;
     }
