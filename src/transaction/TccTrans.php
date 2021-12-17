@@ -90,7 +90,7 @@ class TccTrans extends TransBase implements ITransExcludeSaga
     public function transFromQuery(array $queryData): TccTrans {
         $trans           = new TccTrans();
         $urlInfo         = parse_url($queryData["dtm"]);
-        $trans->dtmHost  = sprintf("%s:%s", $urlInfo["host"], $urlInfo["port"]);
+        $trans->dtmHost  = sprintf("%s://%s:%s", $urlInfo["scheme"], $urlInfo["host"], $urlInfo["port"]);
         $trans->branchId = $queryData["branch_id"];
         $trans->transGid = $queryData["gid"];
         return $trans;
