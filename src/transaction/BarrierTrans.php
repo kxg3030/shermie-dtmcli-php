@@ -82,6 +82,7 @@ class BarrierTrans
      * @return bool
      */
     public function call(IDatabase $database, callable $callback): bool {
+        $database->beginTrans();
         try {
             $this->barrierId++;
             $barrierId    = sprintf("%02d", $this->barrierId);
@@ -93,6 +94,7 @@ class BarrierTrans
             $second       = $this->insertBarrier($database, $this->operate, $barrierId);
             $actionIgnore = $this->operate == DtmConstant::ActionCancel || $this->operate == DtmConstant::ActionCompensate;
             if ($actionIgnore && $first && $second == false) {
+                $database->commit();
                 return true;
             }
             $success = $callback($database);

@@ -11,4 +11,6 @@ interface IDatabase
     public function rollback();
 
     public function commit();
+
+    public function beginTrans();
 }

@@ -26,6 +26,10 @@ class UserDatabase implements IDatabase
     public function commit() {
         // TODO: Implement commit() method.
     }
+
+    public function beginTrans() {
+        // TODO: Implement beginTrans() method.
+    }
 }
 
 $baseUrl = "http://127.0.0.1:18310";
