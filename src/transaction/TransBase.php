@@ -58,7 +58,7 @@ abstract class TransBase
         ])->getBody()->getContents();
         $response = json_decode($body, false);
         if (strpos($body,DtmConstant::Failure) !== false) {
-            throw new Exception($response->message);
+            throw new Exception("prepare request fail：".$response->message);
         }
         return true;
     }
@@ -72,7 +72,7 @@ abstract class TransBase
         ])->getBody()->getContents();
         $response = json_decode($body, false);
         if (strpos($body,DtmConstant::Failure) !== false) {
-            throw new Exception($response->message);
+            throw new Exception("abort request fail：".$response->message);
         }
         return true;
     }
@@ -86,7 +86,7 @@ abstract class TransBase
         ])->getBody()->getContents();
         $response = json_decode($body, false);
         if (strpos($body,DtmConstant::Failure) !== false) {
-            throw new Exception($response->message);
+            throw new Exception("submit request fail：".$response->message);
         }
         return true;
     }
@@ -98,7 +98,7 @@ abstract class TransBase
         $body     = $this->client()->get($this->combineUrl(DtmConstant::GetNewGidPath))->getBody()->getContents();
         $response = json_decode($body, false);
         if (strpos($body,DtmConstant::Failure) !== false) {
-            throw new Exception($response->message);
+            throw new Exception("create gid fail：".$response->message);
         }
         return $response->gid;
     }
@@ -112,7 +112,7 @@ abstract class TransBase
         ])->getBody()->getContents();
         $response = json_decode($body, false);
         if (strpos($body,DtmConstant::Failure) !== false) {
-            throw new Exception($response->message);
+            throw new Exception("register branch fail：".$response->message);
         }
         return true;
     }
