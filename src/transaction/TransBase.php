@@ -3,6 +3,7 @@
 namespace Sett\Dtmcli\transaction;
 
 use Exception;
+use GuzzleHttp\Exception\RequestException;
 use Sett\Dtmcli\constant\DtmConstant;
 use Sett\Dtmcli\traits\HttpTrait;
 use Sett\Dtmcli\traits\UtilsTrait;
@@ -57,8 +58,8 @@ abstract class TransBase
             "json" => $postData,
         ])->getBody()->getContents();
         $response = json_decode($body, false);
-        if (strpos($body,DtmConstant::Failure) !== false) {
-            throw new Exception("prepare request fail：".$response->message);
+        if (strpos($body, DtmConstant::Failure) !== false) {
+            throw new Exception("prepare request fail：" . $response->message);
         }
         return true;
     }
@@ -71,8 +72,8 @@ abstract class TransBase
             "json" => $postData,
         ])->getBody()->getContents();
         $response = json_decode($body, false);
-        if (strpos($body,DtmConstant::Failure) !== false) {
-            throw new Exception("abort request fail：".$response->message);
+        if (strpos($body, DtmConstant::Failure) !== false) {
+            throw new Exception("abort request fail：" . $response->message);
         }
         return true;
     }
@@ -85,8 +86,8 @@ abstract class TransBase
             "json" => $postData
         ])->getBody()->getContents();
         $response = json_decode($body, false);
-        if (strpos($body,DtmConstant::Failure) !== false) {
-            throw new Exception("submit request fail：".$response->message);
+        if (strpos($body, DtmConstant::Failure) !== false) {
+            throw new Exception("submit request fail：" . $response->message);
         }
         return true;
     }
@@ -97,8 +98,8 @@ abstract class TransBase
     public function createNewGid(): string {
         $body     = $this->client()->get($this->combineUrl(DtmConstant::GetNewGidPath))->getBody()->getContents();
         $response = json_decode($body, false);
-        if (strpos($body,DtmConstant::Failure) !== false) {
-            throw new Exception("create gid fail：".$response->message);
+        if (strpos($body, DtmConstant::Failure) !== false) {
+            throw new Exception("create gid fail：" . $response->message);
         }
         return $response->gid;
     }
@@ -111,8 +112,8 @@ abstract class TransBase
             "json" => $postData
         ])->getBody()->getContents();
         $response = json_decode($body, false);
-        if (strpos($body,DtmConstant::Failure) !== false) {
-            throw new Exception("register branch fail：".$response->message);
+        if (strpos($body, DtmConstant::Failure) !== false) {
+            throw new Exception("register branch fail：" . $response->message);
         }
         return true;
     }
@@ -132,7 +133,7 @@ abstract class TransBase
             "query" => http_build_query($queryData),
             "json"  => $postData,
         ])->getBody()->getContents();
-        if (strpos($body,DtmConstant::Failure) !== false) {
+        if (strpos($body, DtmConstant::Failure) !== false) {
             throw new Exception("try branch return fail");
         }
         return true;

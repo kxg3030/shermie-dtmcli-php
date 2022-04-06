@@ -2,6 +2,7 @@
 
 namespace Sett\Dtmcli\transaction;
 
+use Exception;
 use Sett\Dtmcli\constant\DtmConstant;
 use Sett\Dtmcli\transaction\contract\IDatabase;
 
@@ -80,6 +81,7 @@ class BarrierTrans
      * @param IDatabase $database
      * @param callable $callback
      * @return bool
+     * @throws Exception
      */
     public function call(IDatabase $database, callable $callback): bool {
         $database->beginTrans();
@@ -103,9 +105,9 @@ class BarrierTrans
                 return false;
             }
             $database->commit();
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $database->rollback();
-            throw;
+            throw $exception;
         }
         return true;
     }
