@@ -79,7 +79,7 @@ composer require sett/dtmcli-php
  - 子事务屏障
      ```javascript
      class UserDatabase implements IDatabase
-      {
+    {
    
        public function execute(string $query) {
            // TODO: Implement execute() method.
@@ -96,7 +96,11 @@ composer require sett/dtmcli-php
        public function commit() {
            // TODO: Implement commit() method.
        }
-      }
+       
+       public function beginTrans(){
+       
+      } 
+   }
 
    $baseUrl = "http://127.0.0.1:18310";
    try {
