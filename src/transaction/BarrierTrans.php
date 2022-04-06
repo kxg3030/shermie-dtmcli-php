@@ -87,15 +87,15 @@ class BarrierTrans
         $database->beginTrans();
         try {
             $this->barrierId++;
-            $barrierId    = sprintf("%02d", $this->barrierId);
-            $originType   = [
+            $barrierId     = sprintf("%02d", $this->barrierId);
+            $originType    = [
                 DtmConstant::ActionCancel     => DtmConstant::ActionTry,
                 DtmConstant::ActionCompensate => DtmConstant::Action
             ][$this->operate];
-            $first        = $this->insertBarrier($database, $originType, $barrierId);
-            $second       = $this->insertBarrier($database, $this->operate, $barrierId);
-            $actionIgnore = $this->operate == DtmConstant::ActionCancel || $this->operate == DtmConstant::ActionCompensate;
-            if ($actionIgnore && $first && $second == false) {
+            $originAffect  = $this->insertBarrier($database, $originType, $barrierId);
+            $currentAffect = $this->insertBarrier($database, $this->operate, $barrierId);
+            $actionIgnore  = $this->operate == DtmConstant::ActionCancel || $this->operate == DtmConstant::ActionCompensate;
+            if ($actionIgnore && $originAffect || $currentAffect == false) {
                 $database->commit();
                 return true;
             }
