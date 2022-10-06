@@ -68,7 +68,7 @@ abstract class TransBase
      * @throws Exception
      */
     protected function abortRequest(array $postData = []): bool {
-        $body     = $this->client()->post($this->combineUrl(DtmConstant::TransPreparePath), [
+        $body     = $this->client()->post($this->combineUrl(DtmConstant::TransAbortPath), [
             "json" => $postData,
         ])->getBody()->getContents();
         $response = json_decode($body, false);
