@@ -7,12 +7,12 @@ require __DIR__ . "/../vendor/autoload.php";
 $baseUrl = "http://127.0.0.1:18310";
 // saga
 try {
-    $trans = new SagaTrans("172.19.0.89:36789");
+    $trans = new SagaTrans("http://127.0.0.1:36789");
     $gid   = $trans->createNewGid();
     $trans
         ->withGid($gid)
-        ->withOperate("$baseUrl/dtm/saga/transOut", "$baseUrl/dtm/saga/transOutRevert", ["amount" => 30])
-        ->withOperate("$baseUrl/dtm/saga/transIn", "$baseUrl/dtm/saga/transInRevert", ["amount" => 30]);
+        ->withOperate("$baseUrl/api/saga-trans-out", "$baseUrl/api/saga-trans-out-revert", ["amount" => 30, "user_id" => 1])
+        ->withOperate("$baseUrl/api/saga-trans-in", "$baseUrl/api/saga-trans-in-revert", ["amount" => 30, "user_id" => 2]);
     $success = $trans->submit();
     echo "transaction result {$success}";
 } catch (Exception $exception) {
