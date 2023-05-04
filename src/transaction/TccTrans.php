@@ -6,8 +6,7 @@ use Exception;
 use Sett\Dtmcli\constant\DtmConstant;
 use Sett\Dtmcli\transaction\contract\ITransExcludeSaga;
 
-class TccTrans extends TransBase implements ITransExcludeSaga
-{
+class TccTrans extends TransBase implements ITransExcludeSaga {
     public $branchId    = "";
     public $subBranchId = 0;
 
@@ -39,7 +38,11 @@ class TccTrans extends TransBase implements ITransExcludeSaga
         if (empty($this->transGid)) {
             throw new Exception("gid can not be empty");
         }
-        return $this->submitRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::TccTrans, "wait_result" => $this->waitResult]);
+        return $this->submitRequest([
+            "gid"         => $this->transGid,
+            "trans_type"  => DtmConstant::TccTrans,
+            "wait_result" => $this->waitResult
+        ]);
     }
 
     /**

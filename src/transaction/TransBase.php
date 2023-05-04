@@ -3,13 +3,11 @@
 namespace Sett\Dtmcli\transaction;
 
 use Exception;
-use GuzzleHttp\Exception\RequestException;
 use Sett\Dtmcli\constant\DtmConstant;
 use Sett\Dtmcli\traits\HttpTrait;
 use Sett\Dtmcli\traits\UtilsTrait;
 
-abstract class TransBase
-{
+abstract class TransBase {
     use HttpTrait;
     use UtilsTrait;
 
@@ -25,6 +23,8 @@ abstract class TransBase
     public $queryUrl = "";
     // 是否等待事务结果
     protected $waitResult = false;
+    // 自定义头部
+    public $branchHeader = [];
 
     public function __construct(string $dtmHost = "") {
         $this->dtmHost = $dtmHost;
@@ -83,7 +83,8 @@ abstract class TransBase
      */
     protected function submitRequest(array $postData): bool {
         $body     = $this->client()->post($this->combineUrl(DtmConstant::TransSubmitPath), [
-            "json" => $postData
+            "json"    => $postData,
+            "headers" => $this->branchHeader
         ])->getBody()->getContents();
         $response = json_decode($body, false);
         if (strpos($body, DtmConstant::Failure) !== false) {
