@@ -12,7 +12,7 @@ trait HttpTrait
     protected function client(array $config = []): Client {
         return new Client(array_merge([
             "verify"  => false,
-            "timeout" => 60
+            "timeout" => 30
         ], $config));
     }
 }

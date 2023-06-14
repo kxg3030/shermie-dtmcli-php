@@ -5,11 +5,12 @@ namespace Sett\Dtmcli\transaction;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Sett\Dtmcli\constant\DtmConstant;
-use Sett\Dtmcli\transaction\contract\IDatabase;
+use Sett\Dtmcli\exception\FailException;
+use Sett\Dtmcli\transaction\contract\ITransWithAbort;
 use Sett\Dtmcli\transaction\contract\ITransWithPrepare;
 use Sett\Dtmcli\transaction\contract\ITransWithSubmit;
 
-class MsgTrans extends TransBase implements ITransWithPrepare, ITransWithSubmit {
+class MsgTrans extends TransBase implements ITransWithPrepare, ITransWithSubmit, ITransWithAbort {
 
     /**
      * @param string $actionUrl
@@ -31,7 +32,7 @@ class MsgTrans extends TransBase implements ITransWithPrepare, ITransWithSubmit 
 
 
     /**
-     * @throws Exception|GuzzleException
+     * @throws FailException|GuzzleException
      */
     public function submit(): bool {
         return $this->submitRequest([
@@ -41,7 +42,6 @@ class MsgTrans extends TransBase implements ITransWithPrepare, ITransWithSubmit 
             "payloads"       => $this->payloads,
             "query_prepared" => $this->queryPrepare,
             "wait_result"    => $this->waitResult,
-            "custom_data"    => $this->customData,
         ]);
     }
 
@@ -56,13 +56,10 @@ class MsgTrans extends TransBase implements ITransWithPrepare, ITransWithSubmit 
 
     /**
      * @param string $queryUri
-     * @param IDatabase $database
      * @param \Closure $callback
-     * @return bool
      * @throws GuzzleException
-     * @throws Exception
      */
-    public function doAndSubmit(string $queryUri, IDatabase $database, \Closure $callback): bool {
+    public function doAndSubmit(string $queryUri, \Closure $callback) {
         $this->queryPrepare = $queryUri;
         $barrierFrom        = [
             "trans_type" => DtmConstant::MsgTrans,
@@ -70,30 +67,37 @@ class MsgTrans extends TransBase implements ITransWithPrepare, ITransWithSubmit 
             "branch_id"  => "00",
             "op"         => DtmConstant::MsgTrans
         ];
-        $preparePost        = [
-            "gid"            => $this->transGid,
-            "trans_type"     => DtmConstant::MsgTrans,
-            "steps"          => $this->transSteps,
-            "payloads"       => $this->payloads,
-            "query_prepared" => $this->queryPrepare,
-            "wait_result"    => $this->waitResult,
-            "custom_data"    => $this->customData,
-        ];
         // 发送预请求
-        $success = $this->prepareRequest($preparePost);
-        if (!$success) {
-            throw new Exception("msg trans prepare fail");
+        $this->prepare();
+        try {
+            $callback();
+            $this->submit();
+        } catch (FailException $failException) {
+            $this->abort();
+        } catch (\Throwable $throwable) {
+            $this->queryPrepare($barrierFrom);
         }
-        $success = $callback($database);
-        if (!$success) {
-            // 查询执行结果
-            $success = $this->requestBranch([], $barrierFrom["branch_id"], $this->queryPrepare, $barrierFrom["trans_type"], $barrierFrom["op"]);
-            if (!$success) {
-                // 修改事务状态为异常
-                $this->abortRequest($preparePost);
-            }
-            return false;
+    }
+
+    /**
+     * @param array $barrierFrom
+     * @throws GuzzleException
+     */
+    public function queryPrepare(array $barrierFrom) {
+        try {
+            $this->requestBranch([], $barrierFrom["branch_id"], $this->queryPrepare, $barrierFrom["trans_type"], $barrierFrom["op"]);
+        } catch (FailException $failException) {
+            $this->abort();
         }
-        return $this->submitRequest($preparePost);
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function abort() {
+        $this->abortRequest([
+            'gid'        => $this->transGid,
+            'trans_type' => DtmConstant::MsgTrans,
+        ]);
     }
 }
