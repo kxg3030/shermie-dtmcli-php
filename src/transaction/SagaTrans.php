@@ -4,9 +4,9 @@ namespace Sett\Dtmcli\transaction;
 
 use Exception;
 use Sett\Dtmcli\constant\DtmConstant;
-use Sett\Dtmcli\transaction\contract\ITransWithSaga;
+use Sett\Dtmcli\transaction\contract\ITransWithSubmit;
 
-class SagaTrans extends TransBase implements ITransWithSaga
+class SagaTrans extends TransBase implements ITransWithSubmit
 {
     // 事务执行顺序
     public $transSteps = [];
@@ -41,10 +41,6 @@ class SagaTrans extends TransBase implements ITransWithSaga
             "payloads"    => $this->payloads,
             "wait_result" => $this->waitResult
         ]);
-    }
-
-    public function abort() {
-        // TODO: Implement abort() method.
     }
 
 }

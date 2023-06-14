@@ -3,16 +3,19 @@
 namespace Sett\Dtmcli\transaction;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Sett\Dtmcli\constant\DtmConstant;
-use Sett\Dtmcli\transaction\contract\ITransExcludeSaga;
+use Sett\Dtmcli\transaction\contract\ITransWithAbort;
+use Sett\Dtmcli\transaction\contract\ITransWithPrepare;
+use Sett\Dtmcli\transaction\contract\ITransWithSubmit;
 
-class TccTrans extends TransBase implements ITransExcludeSaga {
+class TccTrans extends TransBase implements ITransWithPrepare, ITransWithAbort, ITransWithSubmit {
     public $branchId    = "";
     public $subBranchId = 0;
 
 
     /**
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function withOperate(string $gid, callable $callback): bool {
         $success = $this->withGid($gid)->prepare();
@@ -25,6 +28,7 @@ class TccTrans extends TransBase implements ITransExcludeSaga {
 
     /**
      * @throws Exception
+     * @throws GuzzleException
      */
     public function prepare(): bool {
         return $this->prepareRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::TccTrans, "wait_result" => $this->waitResult]);
@@ -32,7 +36,7 @@ class TccTrans extends TransBase implements ITransExcludeSaga {
 
 
     /**
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function submit(): bool {
         if (empty($this->transGid)) {
@@ -46,7 +50,7 @@ class TccTrans extends TransBase implements ITransExcludeSaga {
     }
 
     /**
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function abort(): bool {
         if (empty($this->transGid)) {
@@ -70,7 +74,7 @@ class TccTrans extends TransBase implements ITransExcludeSaga {
     }
 
     /**
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function callBranch(array $postData, string $tryUrl, string $confirmUrl, string $cancelUrl): bool {
         $branchId = $this->subBranchId();
@@ -98,6 +102,4 @@ class TccTrans extends TransBase implements ITransExcludeSaga {
         $trans->transGid = $queryData["gid"];
         return $trans;
     }
-
-
 }

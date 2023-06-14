@@ -7,9 +7,7 @@ namespace Sett\Dtmcli\transaction\contract;
  * @package sett\transaction\contract
  * tcc|xa|msg
  */
-interface ITransWithSaga
+interface ITransWithSubmit
 {
     public function submit();
-
-    public function abort();
 }

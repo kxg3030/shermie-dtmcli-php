@@ -4,9 +4,9 @@ namespace Sett\Dtmcli\transaction;
 
 use Exception;
 use Sett\Dtmcli\constant\DtmConstant;
-use Sett\Dtmcli\transaction\contract\ITransExcludeSaga;
+use Sett\Dtmcli\transaction\contract\ITransWithPrepare;
 
-class XaTrans extends TransBase implements ITransExcludeSaga {
+class XaTrans extends TransBase implements ITransWithPrepare {
     public $branchId    = "";
     public $subBranchId = 0;
 
