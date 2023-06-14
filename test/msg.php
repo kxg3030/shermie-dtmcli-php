@@ -15,6 +15,7 @@ try {
         ->withOperate("$baseUrl/dtm/msg/transIn", ["amount" => 30])
         ->withQueryUrl("$baseUrl/dtm/msg/query")
         ->prepare();
+
     $success = $trans->submit();
     echo "transaction result {$success}";
 } catch (Exception $exception) {

@@ -3,6 +3,7 @@
 namespace Sett\Dtmcli\transaction;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Sett\Dtmcli\constant\DtmConstant;
 use Sett\Dtmcli\traits\HttpTrait;
 use Sett\Dtmcli\traits\UtilsTrait;
@@ -46,9 +47,16 @@ abstract class TransBase {
         return $this;
     }
 
+    /**
+     * @param array $branchHeader
+     */
+    public function setBranchHeader(array $branchHeader) {
+        $this->branchHeader = $branchHeader;
+    }
+
 
     /**
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     protected function prepareRequest(array $postData = []): bool {
         if ($this->dtmHost == "") {

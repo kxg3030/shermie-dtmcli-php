@@ -13,6 +13,7 @@ try {
         ->withGid($gid)
         ->withOperate("$baseUrl/api/saga-trans-out", "$baseUrl/api/saga-trans-out-revert", ["amount" => 30, "user_id" => 1])
         ->withOperate("$baseUrl/api/saga-trans-in", "$baseUrl/api/saga-trans-in-revert", ["amount" => 30, "user_id" => 2]);
+
     $success = $trans->submit();
     echo "transaction result {$success}";
 } catch (Exception $exception) {

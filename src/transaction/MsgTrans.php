@@ -3,6 +3,7 @@
 namespace Sett\Dtmcli\transaction;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Sett\Dtmcli\constant\DtmConstant;
 use Sett\Dtmcli\transaction\contract\ITransExcludeSaga;
 
@@ -43,6 +44,7 @@ class MsgTrans extends TransBase implements ITransExcludeSaga
 
     /**
      * @throws Exception
+     * @throws GuzzleException
      */
     public function prepare(): bool {
         return $this->prepareRequest([
