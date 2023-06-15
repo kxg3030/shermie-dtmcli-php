@@ -50,7 +50,14 @@ class MsgTrans extends TransBase implements ITransWithPrepare, ITransWithSubmit,
      * @throws GuzzleException
      */
     public function prepare(): bool {
-        return $this->prepareRequest();
+        return $this->prepareRequest([
+            "gid"            => $this->transGid,
+            "trans_type"     => DtmConstant::MsgTrans,
+            "steps"          => $this->transSteps,
+            "payloads"       => $this->payloads,
+            "query_prepared" => $this->queryPrepare,
+            "wait_result"    => $this->waitResult,
+        ]);
     }
 
 

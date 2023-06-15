@@ -3,11 +3,11 @@
 namespace Sett\Dtmcli\transaction;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Sett\Dtmcli\constant\DtmConstant;
 use Sett\Dtmcli\transaction\contract\ITransWithSubmit;
 
-class SagaTrans extends TransBase implements ITransWithSubmit
-{
+class SagaTrans extends TransBase implements ITransWithSubmit {
     // 事务执行顺序
     public $transSteps = [];
 
@@ -28,7 +28,7 @@ class SagaTrans extends TransBase implements ITransWithSubmit
     }
 
     /**
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function submit(): bool {
         if (empty($this->transGid)) {
