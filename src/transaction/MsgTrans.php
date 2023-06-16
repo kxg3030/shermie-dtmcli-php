@@ -71,10 +71,11 @@ class MsgTrans extends TransBase implements ITransWithPrepare, ITransWithSubmit,
     public function doAndSubmit(string $queryUri, \Closure $callback) {
         $this->queryPrepare = $queryUri;
         $barrierFrom        = [
-            "trans_type" => DtmConstant::MsgTrans,
-            "gid"        => $this->transGid,
-            "branch_id"  => "00",
-            "op"         => DtmConstant::MsgTrans
+            "trans_type"     => DtmConstant::MsgTrans,
+            "gid"            => $this->transGid,
+            "branch_id"      => "00",
+            "op"             => DtmConstant::MsgTrans,
+            "branch_headers" => $this->branchHeader,
         ];
         // 发送预请求
         $this->prepare();
