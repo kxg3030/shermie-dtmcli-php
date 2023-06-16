@@ -4,8 +4,11 @@ namespace Sett\Dtmcli\transaction;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 use Sett\Dtmcli\constant\DtmConstant;
 use Sett\Dtmcli\exception\FailException;
+use Sett\Dtmcli\exception\OngoingException;
 use Sett\Dtmcli\traits\HttpTrait;
 use Sett\Dtmcli\traits\UtilsTrait;
 
@@ -110,6 +113,19 @@ abstract class TransBase {
         $this->branchHeader = $branchHeader;
     }
 
+    /**
+     * @param Response $response
+     * @throws OngoingException|FailException
+     */
+    public function transStatus(ResponseInterface $response) {
+        if ($response->getStatusCode() == 425) {
+            throw new OngoingException("trans on going");
+        }
+        if ($response->getStatusCode() == 409) {
+            throw new FailException("trans fail");
+        }
+    }
+
 
     /**
      * @throws Exception|GuzzleException
@@ -119,8 +135,7 @@ abstract class TransBase {
             throw new Exception("dtm host is empty");
         }
         $body     = $this->client()->post($this->combineUrl(DtmConstant::TransPreparePath), [
-            "json"    => $postData,
-            "headers" => $this->branchHeader
+            "json" => $postData,
         ])->getBody()->getContents();
         $response = json_decode($body, false);
         if (strpos($body, DtmConstant::Failure) !== false) {
@@ -133,10 +148,10 @@ abstract class TransBase {
      * @throws Exception|GuzzleException
      */
     protected function abortRequest(array $postData = []): bool {
-        $body     = $this->client()->post($this->combineUrl(DtmConstant::TransAbortPath), [
-            "json"    => $postData,
-            "headers" => $this->branchHeader
-        ])->getBody()->getContents();
+        $response = $this->client()->post($this->combineUrl(DtmConstant::TransAbortPath), [
+            "json" => $postData,
+        ]);
+        $body     = $response->getBody()->getContents();
         $response = json_decode($body, false);
         if (strpos($body, DtmConstant::Failure) !== false) {
             throw new FailException("abort request fail：" . $response->message);
@@ -148,10 +163,10 @@ abstract class TransBase {
      * @throws FailException|GuzzleException
      */
     protected function submitRequest(array $postData): bool {
-        $body     = $this->client()->post($this->combineUrl(DtmConstant::TransSubmitPath), [
-            "json"    => $postData,
-            "headers" => $this->branchHeader
-        ])->getBody()->getContents();
+        $response = $this->client()->post($this->combineUrl(DtmConstant::TransSubmitPath), [
+            "json" => $postData,
+        ]);
+        $body     = $response->getBody()->getContents();
         $response = json_decode($body, false);
         if (strpos($body, DtmConstant::Failure) !== false) {
             throw new FailException("submit request fail：" . $response->message);
@@ -163,25 +178,27 @@ abstract class TransBase {
      * @throws Exception|GuzzleException
      */
     public function createNewGid(): string {
-        $body     = $this->client()->get($this->combineUrl(DtmConstant::GetNewGidPath))->getBody()->getContents();
-        $response = json_decode($body, false);
+        $response = $this->client()->get($this->combineUrl(DtmConstant::GetNewGidPath));
+        $body     = $response->getBody()->getContents();
+
         if (strpos($body, DtmConstant::Failure) !== false) {
-            throw new FailException("create gid fail：" . $response->message);
+            throw new FailException("create gid fail");
         }
-        return $response->gid;
+        $data = json_decode($body, false);
+        return $data->gid;
     }
 
     /**
      * @throws Exception|GuzzleException
      */
     public function registerBranch(array $postData): bool {
-        $body     = $this->client()->post($this->combineUrl(DtmConstant::RegisterTccBranchPath), [
-            "json"    => $postData,
-            "headers" => $this->branchHeader
-        ])->getBody()->getContents();
-        $response = json_decode($body, false);
+        $response = $this->client()->post($this->combineUrl(DtmConstant::RegisterTccBranchPath), [
+            "json" => $postData,
+        ]);
+        $body     = $response->getBody()->getContents();
+
         if (strpos($body, DtmConstant::Failure) !== false) {
-            throw new FailException("register branch fail：" . $response->message);
+            throw new FailException("register branch fail");
         }
         return true;
     }
@@ -191,16 +208,16 @@ abstract class TransBase {
      */
     public function requestBranch(array $postData, string $branchId, $tryUrl, $transType, $operate): bool {
         $queryData = [
-            "dtm"        => sprintf("%s%s", $this->dtmHost, "/api/dtmsvr"),
-            "gid"        => $this->transGid,
-            "branch_id"  => $branchId,
-            "trans_type" => $transType,
-            "op"         => $operate
+            "dtm"            => sprintf("%s%s", $this->dtmHost, "/api/dtmsvr"),
+            "gid"            => $this->transGid,
+            "branch_id"      => $branchId,
+            "trans_type"     => $transType,
+            "op"             => $operate,
+            "branch_headers" => $this->branchHeader,
         ];
         $body      = $this->client()->post($tryUrl, [
-            "query"   => http_build_query($queryData),
-            "json"    => $postData,
-            "headers" => $this->branchHeader
+            "query" => http_build_query($queryData),
+            "json"  => $postData,
         ])->getBody()->getContents();
         if (strpos($body, DtmConstant::Failure) !== false) {
             throw new FailException("try branch return fail");

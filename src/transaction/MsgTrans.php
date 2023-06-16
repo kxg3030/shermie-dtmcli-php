@@ -42,6 +42,7 @@ class MsgTrans extends TransBase implements ITransWithPrepare, ITransWithSubmit,
             "payloads"       => $this->payloads,
             "query_prepared" => $this->queryPrepare,
             "wait_result"    => $this->waitResult,
+            "branch_headers" => $this->branchHeader,
         ]);
     }
 
@@ -57,6 +58,7 @@ class MsgTrans extends TransBase implements ITransWithPrepare, ITransWithSubmit,
             "payloads"       => $this->payloads,
             "query_prepared" => $this->queryPrepare,
             "wait_result"    => $this->waitResult,
+            "branch_headers" => $this->branchHeader,
         ]);
     }
 
@@ -64,7 +66,7 @@ class MsgTrans extends TransBase implements ITransWithPrepare, ITransWithSubmit,
     /**
      * @param string $queryUri
      * @param \Closure $callback
-     * @throws GuzzleException
+     * @throws GuzzleException|FailException
      */
     public function doAndSubmit(string $queryUri, \Closure $callback) {
         $this->queryPrepare = $queryUri;
@@ -81,20 +83,23 @@ class MsgTrans extends TransBase implements ITransWithPrepare, ITransWithSubmit,
             $this->submit();
         } catch (FailException $failException) {
             $this->abort();
+            throw $failException;
         } catch (\Throwable $throwable) {
             $this->queryPrepare($barrierFrom);
+            throw $throwable;
         }
     }
 
     /**
      * @param array $barrierFrom
-     * @throws GuzzleException
+     * @throws GuzzleException|FailException
      */
     public function queryPrepare(array $barrierFrom) {
         try {
             $this->requestBranch([], $barrierFrom["branch_id"], $this->queryPrepare, $barrierFrom["trans_type"], $barrierFrom["op"]);
-        } catch (FailException $failException) {
+        } catch (FailException $exception) {
             $this->abort();
+            throw $exception;
         }
     }
 
@@ -103,8 +108,9 @@ class MsgTrans extends TransBase implements ITransWithPrepare, ITransWithSubmit,
      */
     public function abort() {
         $this->abortRequest([
-            'gid'        => $this->transGid,
-            'trans_type' => DtmConstant::MsgTrans,
+            'gid'            => $this->transGid,
+            'trans_type'     => DtmConstant::MsgTrans,
+            "branch_headers" => $this->branchHeader,
         ]);
     }
 }

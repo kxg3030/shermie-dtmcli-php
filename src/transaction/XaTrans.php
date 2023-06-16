@@ -3,6 +3,7 @@
 namespace Sett\Dtmcli\transaction;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Sett\Dtmcli\constant\DtmConstant;
 use Sett\Dtmcli\transaction\contract\ITransWithPrepare;
 
@@ -12,36 +13,38 @@ class XaTrans extends TransBase implements ITransWithPrepare {
 
     /**
      * @throws Exception
+     * @throws GuzzleException
      */
     public function submit(): bool {
         if (empty($this->transGid)) {
             throw new Exception("gid can not be empty");
         }
         return $this->submitRequest([
-            "gid"         => $this->transGid,
-            "trans_type"  => DtmConstant::XaTrans,
-            "wait_result" => $this->waitResult
+            "gid"            => $this->transGid,
+            "trans_type"     => DtmConstant::XaTrans,
+            "wait_result"    => $this->waitResult,
+            "branch_headers" => $this->branchHeader,
         ]);
     }
 
     /**
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     function prepare(): bool {
         if (empty($this->transGid)) {
             throw new Exception("gid can not be empty");
         }
-        return $this->prepareRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::XaTrans, "wait_result" => $this->waitResult]);
+        return $this->prepareRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::XaTrans, "wait_result" => $this->waitResult, "branch_headers" => $this->branchHeader,]);
     }
 
     /**
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function abort(): bool {
         if (empty($this->transGid)) {
             throw new Exception("gid can not be empty");
         }
-        return $this->abortRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::XaTrans]);
+        return $this->abortRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::XaTrans, "branch_headers" => $this->branchHeader,]);
     }
 
 

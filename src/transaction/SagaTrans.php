@@ -35,11 +35,12 @@ class SagaTrans extends TransBase implements ITransWithSubmit {
             throw new Exception("gid can not be empty");
         }
         return $this->submitRequest([
-            "gid"         => $this->transGid,
-            "trans_type"  => DtmConstant::SagaTrans,
-            "steps"       => $this->transSteps,
-            "payloads"    => $this->payloads,
-            "wait_result" => $this->waitResult
+            "gid"            => $this->transGid,
+            "trans_type"     => DtmConstant::SagaTrans,
+            "steps"          => $this->transSteps,
+            "payloads"       => $this->payloads,
+            "wait_result"    => $this->waitResult,
+            "branch_headers" => $this->branchHeader,
         ]);
     }
 

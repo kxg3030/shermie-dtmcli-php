@@ -31,7 +31,7 @@ class TccTrans extends TransBase implements ITransWithPrepare, ITransWithAbort, 
      * @throws GuzzleException
      */
     public function prepare(): bool {
-        return $this->prepareRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::TccTrans, "wait_result" => $this->waitResult]);
+        return $this->prepareRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::TccTrans, "wait_result" => $this->waitResult,"branch_headers" => $this->branchHeader,]);
     }
 
 
@@ -43,9 +43,10 @@ class TccTrans extends TransBase implements ITransWithPrepare, ITransWithAbort, 
             throw new Exception("gid can not be empty");
         }
         return $this->submitRequest([
-            "gid"         => $this->transGid,
-            "trans_type"  => DtmConstant::TccTrans,
-            "wait_result" => $this->waitResult
+            "gid"            => $this->transGid,
+            "trans_type"     => DtmConstant::TccTrans,
+            "wait_result"    => $this->waitResult,
+            "branch_headers" => $this->branchHeader,
         ]);
     }
 
@@ -56,7 +57,7 @@ class TccTrans extends TransBase implements ITransWithPrepare, ITransWithAbort, 
         if (empty($this->transGid)) {
             throw new Exception("gid can not be empty");
         }
-        return $this->abortRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::TccTrans]);
+        return $this->abortRequest(["gid" => $this->transGid, "trans_type" => DtmConstant::TccTrans,"branch_headers" => $this->branchHeader,]);
     }
 
     /**
@@ -79,12 +80,13 @@ class TccTrans extends TransBase implements ITransWithPrepare, ITransWithAbort, 
     public function callBranch(array $postData, string $tryUrl, string $confirmUrl, string $cancelUrl): bool {
         $branchId = $this->subBranchId();
         $regData  = [
-            "branch_id"  => $branchId,
-            "cancel"     => $cancelUrl,
-            "confirm"    => $confirmUrl,
-            "data"       => json_encode($postData, JSON_UNESCAPED_UNICODE),
-            "trans_type" => DtmConstant::TccTrans,
-            "gid"        => $this->transGid,
+            "branch_id"      => $branchId,
+            "cancel"         => $cancelUrl,
+            "confirm"        => $confirmUrl,
+            "data"           => json_encode($postData, JSON_UNESCAPED_UNICODE),
+            "trans_type"     => DtmConstant::TccTrans,
+            "gid"            => $this->transGid,
+            "branch_headers" => $this->branchHeader,
         ];
         $this->registerBranch($regData);
         return $this->requestBranch($postData, $branchId, $tryUrl, DtmConstant::TccTrans, DtmConstant::ActionTry);
